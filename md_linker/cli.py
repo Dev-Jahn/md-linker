@@ -118,10 +118,11 @@ def cmd_post_change_sync() -> None:
         diff_text = generate_diff(old_text, new_text, rel)
         changed_sections = get_changed_sections(old_text, new_text)
     elif not target.is_file():
-        # File was deleted
+        # File was deleted — treat all sections as changed
         if snap:
             old_text = snap.read_text(encoding="utf-8")
             diff_text = generate_diff(old_text, "", rel)
+            changed_sections = get_changed_sections(old_text, "")
 
     # 2. Update graph
     graph = LinkGraph.load(_graph_path(project_root))
@@ -155,14 +156,15 @@ def cmd_post_change_sync() -> None:
         remove_snapshot(target, project_root)
         sys.exit(0)
 
-    # Filter by section-level pruning
+    # Filter by section-level pruning (case-insensitive)
+    changed_lower = [s.lower() for s in changed_sections]
     stale_targets: list[str] = []
     for rlink in reverse_links:
         link_section = rlink["link_section"]
         if link_section is None:
             # Document-level link: always stale
             stale_targets.append(rlink["file"])
-        elif link_section in changed_sections:
+        elif link_section.lower() in changed_lower:
             # Section link: stale only if that section changed
             stale_targets.append(rlink["file"])
         # else: section link but section didn't change → skip
@@ -249,33 +251,6 @@ def cmd_post_change_async() -> None:
             _release_lock(project_root)
 
         diff_file.unlink(missing_ok=True)
-
-
-def _generate_summary_placeholder(diff_text: str) -> str:
-    """Placeholder for sub-agent summary generation.
-
-    Extracts a simple summary from the diff.
-    Will be replaced with actual sub-agent call in Phase 5.
-    """
-    added = []
-    removed = []
-    for line in diff_text.splitlines():
-        if line.startswith("+") and not line.startswith("+++"):
-            content = line[1:].strip()
-            if content:
-                added.append(content)
-        elif line.startswith("-") and not line.startswith("---"):
-            content = line[1:].strip()
-            if content:
-                removed.append(content)
-
-    parts = []
-    if removed:
-        parts.append(f"Removed: {'; '.join(removed[:3])}")
-    if added:
-        parts.append(f"Added: {'; '.join(added[:3])}")
-
-    return ". ".join(parts) if parts else "Content modified"
 
 
 # --- Skill commands ---

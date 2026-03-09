@@ -80,7 +80,7 @@ def _extract_summary_from_output(output: str) -> str | None:
 
     # Try to find JSON within the output (may have surrounding text)
     import re
-    json_match = re.search(r'\{[^{}]*"summary"\s*:\s*"[^"]*"[^{}]*\}', output)
+    json_match = re.search(r'\{[^{}]*"summary"\s*:\s*"(?:[^"\\]|\\.)*"[^{}]*\}', output)
     if json_match:
         try:
             data = json.loads(json_match.group())
