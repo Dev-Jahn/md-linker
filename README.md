@@ -34,14 +34,14 @@ Once installed, md-linker works automatically. Every time Claude edits a `.md` f
 - **PostToolUse sync hook** diffs, updates the link graph, detects broken links, and marks stale documents
 - **PostToolUse async hook** generates change summaries in the background
 
-### Manual (via skill)
+### Manual (via commands)
 
 ```
-/md-linker:md-link init       # Scan all .md files and build the link graph
-/md-linker:md-link status     # Show all stale documents
-/md-linker:md-link graph      # Output a mermaid dependency graph
-/md-linker:md-link rebuild    # Rebuild graph from scratch
-/md-linker:md-link resolve    # Remove all stale-refs annotations
+/md-linker:init       # Scan all .md files and build the link graph
+/md-linker:status     # Show all stale documents
+/md-linker:graph      # Output a mermaid dependency graph
+/md-linker:rebuild    # Rebuild graph from scratch
+/md-linker:resolve    # Remove all stale-refs annotations
 ```
 
 ## Link syntax
