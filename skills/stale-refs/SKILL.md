@@ -24,7 +24,7 @@ stale-refs:
   - source: docs/schema.md
     changed_at: 2026-03-09T10:30:00
     sections_changed: ["User Model"]
-    summary: "User model에 email_verified 필드 추가, role enum에 admin 값 추가됨"
+    summary: "Added email_verified field to User model, added admin value to role enum"
 ---
 ```
 
