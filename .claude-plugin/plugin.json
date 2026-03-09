@@ -3,8 +3,12 @@
   "description": "Markdown link graph and staleness detection for Claude Code. Automatically tracks cross-references between markdown documents and detects when linked content becomes stale.",
   "version": "0.1.0",
   "author": {
-    "name": "jahn"
+    "name": "jahn",
+    "email": "ajh508@naver.com",
+    "url": "https://github.com/Dev-Jahn"
   },
+  "homepage": "https://github.com/Dev-Jahn/md-linker",
+  "repository": "https://github.com/Dev-Jahn/md-linker",
   "license": "MIT",
   "keywords": ["markdown", "links", "staleness", "cross-references", "wikilinks"]
 }
