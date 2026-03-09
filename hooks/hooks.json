@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/run.py\" session-sync",
+            "timeout": 30000
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Write|Edit",
@@ -8,6 +19,16 @@
             "type": "command",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/run.py\" pre-snapshot",
             "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/run.py\" pre-read-resolve",
+            "timeout": 60000
           }
         ]
       }

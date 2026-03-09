@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 
 
@@ -24,8 +25,9 @@ def resolve_link_target(target: str, source_file: Path, project_root: Path) -> P
     2. Relative to project root
     3. With .md extension appended
     """
-    # Strip leading ./ if present
-    target = target.lstrip("./")
+    # Strip leading ./ if present (but preserve ../)
+    if target.startswith("./"):
+        target = target[2:]
 
     candidates = []
 
@@ -57,7 +59,16 @@ def relative_path(path: Path, project_root: Path) -> str:
 
 
 def find_project_root(start: Path | None = None) -> Path:
-    """Find project root by looking for .git, .claude, or pyproject.toml."""
+    """Find the user's project root.
+
+    Uses CLAUDE_PROJECT_DIR env var (set by Claude Code) if available,
+    otherwise falls back to marker-based detection from cwd.
+    """
+    # Prefer CLAUDE_PROJECT_DIR set by Claude Code
+    env_root = os.environ.get("CLAUDE_PROJECT_DIR")
+    if env_root:
+        return Path(env_root).resolve()
+
     if start is None:
         start = Path.cwd()
 
