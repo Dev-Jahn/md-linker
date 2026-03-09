@@ -1,0 +1,9 @@
+{
+  "name": "md-linker",
+  "description": "Markdown link graph and staleness detection for Claude Code. Automatically tracks cross-references between markdown documents and detects when linked content becomes stale.",
+  "version": "0.1.0",
+  "author": {
+    "name": "jahn"
+  },
+  "license": "MIT"
+}
