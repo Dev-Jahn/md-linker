@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -404,8 +405,6 @@ def cmd_resolve() -> None:
 
 
 # --- Main dispatcher ---
-
-import os  # noqa: E402 (needed for _acquire_lock)
 
 COMMANDS = {
     "pre-snapshot": cmd_pre_snapshot,
