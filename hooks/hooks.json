@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --project \"${CLAUDE_PLUGIN_ROOT}\" python -m md_linker.cli pre-snapshot",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/run.py\" pre-snapshot",
             "timeout": 3000
           }
         ]
@@ -18,12 +18,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --project \"${CLAUDE_PLUGIN_ROOT}\" python -m md_linker.cli post-change-sync",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/run.py\" post-change-sync",
             "timeout": 10000
           },
           {
             "type": "command",
-            "command": "uv run --project \"${CLAUDE_PLUGIN_ROOT}\" python -m md_linker.cli post-change-async",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/run.py\" post-change-async",
             "timeout": 60000,
             "async": true
           }

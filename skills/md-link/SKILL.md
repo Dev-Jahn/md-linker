@@ -12,7 +12,7 @@ You are managing markdown cross-references for this project using the `md-linker
 
 ## Available Commands
 
-Run these via `uv run --project "${CLAUDE_SKILL_DIR}/.." python -m md_linker.cli <command>`:
+Run these via `python3 "${CLAUDE_SKILL_DIR}/../../run.py" <command>`:
 
 - **init** — Scan all `.md` files and build the link graph (`.md-linker/graph.json`). Run this first in a new project.
 - **status** — Show all stale documents with their summaries.
@@ -25,7 +25,7 @@ Run these via `uv run --project "${CLAUDE_SKILL_DIR}/.." python -m md_linker.cli
 Based on the user's argument (`$ARGUMENTS`), run the corresponding command:
 
 ```bash
-uv run --project "${CLAUDE_SKILL_DIR}/.." python -m md_linker.cli $ARGUMENTS
+python3 "${CLAUDE_SKILL_DIR}/../../run.py" $ARGUMENTS
 ```
 
 If no argument is given, run `status` to show the current state.

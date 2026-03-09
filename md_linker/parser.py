@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-import frontmatter
+from . import frontmatter
 
 
 @dataclass
@@ -73,13 +73,13 @@ def parse_file(file_path: Path) -> ParseResult:
     result = ParseResult(content_hash=compute_hash(text))
 
     # Parse frontmatter
-    post = frontmatter.loads(text)
-    deps = post.metadata.get("depends-on", [])
+    metadata, content = frontmatter.loads(text)
+    deps = metadata.get("depends-on", [])
     if isinstance(deps, list):
         result.frontmatter_deps = [str(d) for d in deps]
 
     # Extract headings
-    for match in _HEADING_RE.finditer(post.content):
+    for match in _HEADING_RE.finditer(content):
         result.headings.append(match.group(2).strip())
 
     # We need line numbers relative to the full file (including frontmatter)

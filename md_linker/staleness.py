@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
 
-import frontmatter
+from . import frontmatter
 
 
 def mark_stale(
@@ -18,9 +18,9 @@ def mark_stale(
 
     If an entry for the same source already exists, it is updated.
     """
-    post = frontmatter.load(str(file_path))
+    metadata, content = frontmatter.load(file_path)
 
-    stale_refs: list[dict] = post.metadata.get("stale-refs", [])
+    stale_refs: list[dict] = metadata.get("stale-refs", [])
     if not isinstance(stale_refs, list):
         stale_refs = []
 
@@ -40,8 +40,8 @@ def mark_stale(
     if summary is not None:
         entry["summary"] = summary
 
-    post.metadata["stale-refs"] = stale_refs
-    file_path.write_text(frontmatter.dumps(post), encoding="utf-8")
+    metadata["stale-refs"] = stale_refs
+    file_path.write_text(frontmatter.dumps(metadata, content), encoding="utf-8")
 
 
 def add_summary(file_path: Path, source: str, summary: str) -> bool:
@@ -49,17 +49,17 @@ def add_summary(file_path: Path, source: str, summary: str) -> bool:
 
     Returns True if the entry was found and updated, False otherwise.
     """
-    post = frontmatter.load(str(file_path))
+    metadata, content = frontmatter.load(file_path)
 
-    stale_refs: list[dict] = post.metadata.get("stale-refs", [])
+    stale_refs: list[dict] = metadata.get("stale-refs", [])
     if not isinstance(stale_refs, list):
         return False
 
     for ref in stale_refs:
         if ref.get("source") == source:
             ref["summary"] = summary
-            post.metadata["stale-refs"] = stale_refs
-            file_path.write_text(frontmatter.dumps(post), encoding="utf-8")
+            metadata["stale-refs"] = stale_refs
+            file_path.write_text(frontmatter.dumps(metadata, content), encoding="utf-8")
             return True
 
     return False
@@ -71,9 +71,9 @@ def remove_stale_entry(file_path: Path, source: str) -> bool:
     Returns True if an entry was removed.
     Removes the stale-refs key entirely if the list becomes empty.
     """
-    post = frontmatter.load(str(file_path))
+    metadata, content = frontmatter.load(file_path)
 
-    stale_refs: list[dict] = post.metadata.get("stale-refs", [])
+    stale_refs: list[dict] = metadata.get("stale-refs", [])
     if not isinstance(stale_refs, list):
         return False
 
@@ -84,11 +84,11 @@ def remove_stale_entry(file_path: Path, source: str) -> bool:
         return False
 
     if stale_refs:
-        post.metadata["stale-refs"] = stale_refs
+        metadata["stale-refs"] = stale_refs
     else:
-        post.metadata.pop("stale-refs", None)
+        metadata.pop("stale-refs", None)
 
-    file_path.write_text(frontmatter.dumps(post), encoding="utf-8")
+    file_path.write_text(frontmatter.dumps(metadata, content), encoding="utf-8")
     return True
 
 
@@ -97,20 +97,20 @@ def clear_all_stale(file_path: Path) -> bool:
 
     Returns True if any entries were removed.
     """
-    post = frontmatter.load(str(file_path))
+    metadata, content = frontmatter.load(file_path)
 
-    if "stale-refs" not in post.metadata:
+    if "stale-refs" not in metadata:
         return False
 
-    del post.metadata["stale-refs"]
-    file_path.write_text(frontmatter.dumps(post), encoding="utf-8")
+    del metadata["stale-refs"]
+    file_path.write_text(frontmatter.dumps(metadata, content), encoding="utf-8")
     return True
 
 
 def get_stale_refs(file_path: Path) -> list[dict]:
     """Read stale-refs from a file's frontmatter."""
-    post = frontmatter.load(str(file_path))
-    refs = post.metadata.get("stale-refs", [])
+    metadata, _ = frontmatter.load(file_path)
+    refs = metadata.get("stale-refs", [])
     if isinstance(refs, list):
         return refs
     return []
