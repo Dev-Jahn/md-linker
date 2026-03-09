@@ -5,5 +5,6 @@
   "author": {
     "name": "jahn"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": ["markdown", "links", "staleness", "cross-references", "wikilinks"]
 }
