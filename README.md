@@ -82,6 +82,16 @@ stale-refs:
 - Claude Code 1.0.33+
 - No external Python dependencies (stdlib only)
 
+## Roadmap
+
+Planned features for future releases:
+
+- **Document normalization** — Reformat inconsistent markdown files to follow a standard structure (heading depth, bullet style, etc.)
+- **Document organization** — Classify documents by purpose and content, unify file names and titles according to naming conventions
+- **Defragmentation** — Merge related content scattered across multiple files into a single document, so the agent can read it in one context
+- **Fragmentation** — Split documents with independently meaningful sections into atomic files linked via an index, avoiding unnecessary full-document reads
+- **Auto-linking** — Detect closely related documents that lack cross-references and insert links automatically
+
 ## Contributing
 
 This project is under active development. Bug reports, corner case discoveries, and improvement suggestions are all welcome — feel free to open an issue or pull request.
