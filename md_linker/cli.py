@@ -233,10 +233,9 @@ def cmd_post_change_async() -> None:
             diff_file.unlink(missing_ok=True)
             continue
 
-        # Generate summary — this is where the sub-agent would be called
-        # For now, use the diff directly as a placeholder summary
-        # The actual sub-agent integration happens in Phase 5
-        summary = _generate_summary_placeholder(diff_text)
+        # Generate summary via sub-agent (Sonnet) or deterministic fallback
+        from .summarizer import summarize_diff
+        summary = summarize_diff(diff_text)
 
         # Update frontmatter with summary
         try:
