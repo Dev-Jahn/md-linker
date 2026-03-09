@@ -1,0 +1,6 @@
+.md-linker/
+__pycache__/
+*.pyc
+.venv/
+dist/
+*.egg-info/
